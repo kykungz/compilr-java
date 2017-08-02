@@ -31,24 +31,34 @@ app.get('/', (req, res) => {
 })
 
 app.post('/compile/', async (req, res, next) => {
-  let filename = req.body.name
-  console.log(req.body)
-  let content = req.body.content
+  const files = req.body.files
+  console.log(files)
   let dirname
 
   try {
     dirname = await fs.mkdtemp('./run/tmp_')
     logger.log('info', `created directory ${dirname}`)
 
-    await fs.writeFile(`${dirname}/${filename}.java`, content)
-    logger.log('info', `created file ${dirname}/${filename}.java`)
+    // create files
+    for (let file of files) {
+      await fs.writeFile(`${dirname}/${file.name}.java`, file.content)
+      logger.log('info', `created file ${dirname}/${file.name}.java`)
+    }
 
     try {
-      await exec(`javac ${dirname}/${filename}.java`)
-      logger.log('info', `compiled ${dirname}/${filename}.java`)
+      // compile file
+      for (let file of files) {
+        await exec(`javac ${dirname}/${file.name}.java`)
+        logger.log('info', `compiled ${dirname}/${file.name}.java`)
+      }
+
+      const commands = files.map((file) => {
+        return `java -cp ${dirname} ${file.name}`
+      }).join('|')
 
       // echo to prevent terminal from freezing on input
-      let result = await exec(`ulimit -t ${config.TIMEOUT};echo "" | java -cp ${dirname} ${filename}`)
+      const result = await exec(`ulimit -t ${config.TIMEOUT};echo "" | ${commands}`)
+
       res.send({
         success: true,
         output: result.stdout
