@@ -7,7 +7,6 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const fs = require('fs-extra')
 const config = require('./config')
-
 const compilr = require('./compilr')
 
 // Constants
@@ -33,7 +32,31 @@ app.get('/', (req, res) => {
   res.sendFile('./dist/index.html', {root: __dirname})
 })
 
-app.post('/compile/', compilr.compile)
+app.post('/compile/', async (req, res, next) => {
+  const files = req.body.files
+  let dirname
+
+  try {
+    // create temp directory
+    dirname = await fs.mkdtemp('./run/tmp_')
+    winston.log('info', `created directory ${dirname}`)
+
+    // create files
+    for (let file of files) {
+      await fs.writeFile(`${dirname}/${file.name}.java`, file.content)
+      winston.log('info', `created file ${dirname}/${file.name}.java`)
+    }
+
+    // compile and run
+    let result = await compilr.compile(dirname, files)
+    res.send(result)
+  } catch (e) {
+    next(e)
+  } finally {
+    await fs.remove(dirname)
+    winston.log('info', `removed directory ${dirname}`)
+  }
+})
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
