@@ -89,5 +89,5 @@ If there is a compile/run error, success field will be `false` and the error out
 
 | Key     | Detail     |
 | :------------- | :------------- |
-| PORT       | Docker's port       |
 | TIMEOUT       | Terminal cpu time limit (in seconds)       |
+| LOG       | Logging (boolean)       |
