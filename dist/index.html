@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>compilr-javascript</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div style="display: flex; margin: 20px;" >
+      <div style="width: 50%; margin-right: 20px">
+      <div id="editor" style="height: 500px;"></div>
+      <button id="submit_btn" style="width: 100%;font-family: monospace;font-size: 26px;margin-top: 20px" type="submit" class="btn btn-primary">Run</button>
+      </div>
+      <textarea readonly id="result" style="background: black; width: 50%;color: rgb(10, 204, 0); padding: 18px; font-size: 18px"></textarea>
+    </div>
+
+    <script src="./lib/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+      $(function() {
+        var editor = ace.edit("editor");
+        editor.resize();
+        $('#submit_btn').click(function() {
+          $.ajax({
+            url: '/compile',
+            type: 'POST',
+            data: {
+              asd: 1,
+              name: 'Run',
+              content: editor.getValue()
+            }
+          })
+          .done(function(data) {
+            $('#result').val(data.output)
+          })
+          .fail(function() {
+            $('#result').val('Error, Server not responding')
+          })
+        })
+      })
+    </script>
+  </body>
+</html>
