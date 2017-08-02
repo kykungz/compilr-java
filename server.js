@@ -10,7 +10,7 @@ const config = require('./config')
 const compilr = require('./compilr')
 
 // Constants
-const PORT = config.PORT
+const PORT = 8080
 const app = express()
 
 if (config.LOG) {
