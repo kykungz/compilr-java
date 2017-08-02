@@ -39,6 +39,7 @@ docker attach compilr-java
 docker exec -it compilr-java bash
 ```
 ## Usage
+### Request
 Compilr will create a simple API server on port 8080 by default. You can compile and run you code by sending a `POST` request to your https://localhost:8080/compile route, with a JSON request body similar to:
 ```javascript
  { "files": [
@@ -61,6 +62,7 @@ Compilr will create a simple API server on port 8080 by default. You can compile
  }
 ] }
 ```
+### Response
 The response will be in JSON format with structure:
 ```javascript
 {
@@ -77,6 +79,7 @@ The response will be in JSON format with structure:
 ```
 If there is a compile/run error, success field will be `false` and the error output will be shown.
 
+---
 ***compilr also provide a simple code editor frontend on your https://localhost:8080***
 
 ![frontend image](https://github.com/kykungz/compilr/blob/master/compilr.png)
