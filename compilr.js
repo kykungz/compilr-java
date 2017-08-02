@@ -27,8 +27,8 @@ compilr.compile = async (dirname, files) => {
     }).join('|')
 
     // run files (echo to prevent terminal from freezing on input)
+    this.logger.log('info', `executed command: ulimit -t ${config.TIMEOUT};echo "" | ${commands}`)
     const result = await exec(`ulimit -t ${config.TIMEOUT};echo "" | ${commands}`)
-
     return {
       success: true,
       output: result.stdout

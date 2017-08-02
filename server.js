@@ -13,12 +13,15 @@ const compilr = require('./compilr')
 const PORT = config.PORT
 const app = express()
 
-winston.configure({
-  transports: [
-    new (winston.transports.Console)(),
-    new (winston.transports.File)({filename: 'server-logs.log'})
-  ]
-})
+if (config.LOG) {
+  winston.configure({
+    transports: [
+      new (winston.transports.Console)(),
+      new (winston.transports.File)({filename: 'server-logs.log'})
+    ]
+  })
+}
+
 compilr.init(winston)
 
 app.use(bodyParser.json())        // to support JSON-encoded bodies
