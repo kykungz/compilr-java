@@ -57,24 +57,19 @@ Compilr will create a simple API server on port 8080 by default. You can compile
 { "files": [
  {
      "name": "Run",
-     "content": "
-     public class Run {
-        public static void main(String[] arg) {
-           System.out.println(Hello World!);
-         }
-       }"
+     "content": "public class Run {public static void main(String[] arg) {System.out.println(Hello World!);}}"
  }
 ] }
 ```
 The response will be in JSON format with structure:
-```json
+```javascript
 {
     "success": <boolean>,
     "output": <runnig_result>
 }
 ```
 *Example:*
-```json
+```javascript
 {
     "success": true,
     "output": "hello world!10\n"
