@@ -11,6 +11,6 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs
 RUN npm install
 
-EXPOSE 13570
+EXPOSE 8080
 
 CMD [ "npm", "start" ]
